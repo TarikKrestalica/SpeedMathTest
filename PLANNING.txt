@@ -1,0 +1,292 @@
+﻿Speed Math Test:
+
+Before addressing each part in depth, it's important to address the
+goal of the program and what it is trying to accomplish. The user
+will be presented and challenged with 5 random arithmetic questions, and
+they will be timed for each question faced. After answering the questions,
+they will then be notified on their performance. Their performance will be
+evaluated based on how many they got right out of the 5 total questions. Then,
+based on their performance, we want to print out a response that reflects it,
+and make them feel good or bad about it.
+
+Part 1: The Setup and Basics
+
+The first thing I did was create the random object. This will
+allow for us to generate the random numbers and operations that is
+at the heart of these problems. I did so with the following
+line of code
+
+    Random rnd = new Random();
+
+After doing so, we then need to create two number variables and a
+a operation in the form of integers. This will look like this..
+
+    int num1, num2, numOp;
+
+    Note: The "numOp" in the representation of the number will
+then be converted to its appropriate arithmetic operation(more on
+than later, so bear with me!)
+
+As stated before, we are trying to prompt the user with 5 mathematical
+problems, and any time we have a situation where we have an action
+that will be repeated a countable number of times, this is the perfect
+candidate for a for loop.
+
+This will be the meat and potatoes of our program, and essientially
+what we are doing is simple: for 5 times, we want to generate two random
+numbers, a random operation which will be converted to its
+appropriate arithmetic operation, and create a mathematical problem
+for the user to solve.
+
+Let's begin with the setup. First we want to create a simple for loop..
+
+for(int numOfProblemsAnswered = 0; numOfProblemsAnswered < 5; ++numOfProblemsAnswered)
+{
+
+}
+
+Note how we created a NumOfProblemsAnswered variable above, and this will allow
+us to keep track of the number of problems we generated and answered properly. Then we
+want to involve our num1, num2, and our numOp variables..
+
+for(int numOfProblemsAnswered = 0; numOfProblemsAnswered < 5; ++numOfProblemsAnswered)
+{
+    num1
+    num2
+    numOp
+}
+
+Then, what we need is to assign, for each variable, a random number. The
+random numbers we will be working with in this case will be from
+1 through 10. Note how we created our random object earlier, and now, we
+want to reference our "rnd" object and use its ".Next" function to choose these
+random numbers for us. It will look like the following
+
+for(int numOfProblemsAnswered = 0; numOfProblemsAnswered < 5; ++numOfProblemsAnswered)
+{
+    num1 = rnd.Next
+    num2 = rnd.Next
+    numOp = rnd.Next
+}
+
+To elaborate more on the ".Next" function, this allows us to pass in two parameters
+of information, a minimum and a maximum number. What this does is that it will choose a
+random number greater than or equal to my minimum number, but less
+than my maximum number. For our purposes, let's start with the numbers.
+For numbers 1 and 2, we want those numbers to be greater than or equal to 1 but
+less than 11 since we want our numbers to be between 1 and 10. This will then look our following
+
+for(int numOfProblemsAnswered = 0; numOfProblemsAnswered < 5; ++numOfProblemsAnswered)
+{
+    num1 = rnd.Next(1, 11)
+    num2 = rnd.Next(1, 11)
+    numOp = rnd.Next( )
+}
+
+The arithmetic operations available to us are the following: +, -, *, /. With our numOp variable, we are entitled to the
+numbers 0 through 3. Now, our for loop should like this...
+
+for(int numOfProblemsAnswered = 0; numOfProblemsAnswered < 5; ++numOfProblemsAnswered)
+{
+    num1 = rnd.Next(1, 11)
+    num2 = rnd.Next(1, 11)
+    numOp = rnd.Next(0, 4)  // Note: Greater than or equal to 0 but less than 4
+}
+
+Now, we effectively have a blueprint and we already the components need to create these math problems. But there are two challenges
+that need to be resolved: how can we display these problems and how can we convert the different values numOp contains and convert
+it to a character representation of the operation?
+
+This is where a function can come into handy. Instead of creating problems one at a time and effectively add cluter to the code, we can
+create a reusable chunk of code to create and display the problem in the form of a string.
+
+For the function, I decided to name it CreateProblem and I will pass it three pieces of information: number1, number2, and op. Outside
+the main function, here is the basic setup...
+
+public static string CreateProblem(int number1, int number2, int op)
+{
+
+}
+
+Then, still needing to obtain a proper character operation, we want ahead and declared a variable
+
+public static string CreateProblem(int number1, int number2, int op)
+{
+    char operation = '?';   // Default operation
+}
+
+Note, our numOp variable holds four potential candidate numbers: 0, 1, 2, 3. Before going further,
+it's important to understand which number stores which operation.
+0 -> +
+1 -> -
+2 -> *
+3 -> /
+
+Based on its current value, we want to obtain the appropriate operator. Whenever we have a situation
+where we have a variable that we want to compare to all its different values, this is the perfect
+candidate for a switch statement. Now, we obtain the following
+
+public static string CreateProblem(int number1, int number2, int op)
+{
+    char operation = '?';
+
+    // Compare my number operation to 4 potential cases
+       switch (op)
+       {
+           case 0:
+             operation = '+';
+             break;
+
+           case 1:
+             operation = '-';
+             break;
+
+           case 2:
+             operation = '*';
+             break;
+
+           case 3:
+              operation = '/';
+              break;
+       }
+}
+
+Now it's time to create the problem. To do so, we want to create a string variable.
+
+    string problem;
+
+The format for these problems will look like the following..
+
+    Format:
+    What is {number1} {operation} {number2}?:
+        number1: first number
+        operation = +, -, *, / in the form of a character; the goal of the switch statement
+        number2: second number
+
+Afterwords, we want to now do the following
+
+public static string CreateProblem(int number1, int number2, int op)
+{
+    char operation = '?';
+
+    // Compare my number operation to 4 potential cases
+       switch (op)
+       {
+           case 0:
+             operation = '+';
+             break;
+
+           case 1:
+             operation = '-';
+             break;
+
+           case 2:
+             operation = '*';
+             break;
+
+           case 3:
+              operation = '/';
+              break;
+       }
+
+    // Store the problem, and return the value stored inside my problem.
+    string problem = "What is {number1} {operation} {number2}?";
+    return problem;
+}
+
+Afterwards, let's go back to the main function 
+
+for(int numOfProblemsAnswered = 0; numOfProblemsAnswered < 5; ++numOfProblemsAnswered)
+{
+    num1 = rnd.Next(1, 11)
+    num2 = rnd.Next(1, 11)
+    numOp = rnd.Next(0, 4)  
+}
+        
+Now, our goal is to display the problem onto the console. Using its WriteLine method,
+we can call the function and do the following
+
+for(int numOfProblemsAnswered = 0; numOfProblemsAnswered < 5; ++numOfProblemsAnswered)
+{
+    num1 = rnd.Next(1, 11)
+    num2 = rnd.Next(1, 11)
+    numOp = rnd.Next(0, 4)
+
+    // Call the function, display the problem
+    Console.WriteLine(CreateProblem(num1, num2, numOp);
+    Console.ReadLine(); 
+}
+
+Once the return key is pressed, we will generate new random numbers and operations to obtain a new mathematical
+problem. But how can we compare our answer and obtain a proper scoring system?
+
+Part 2: Game Logic
+
+Now that we were able to create our problems, now it's time
+to address the logic. Before that, we also want to create some mechanism
+that allows us to track the amount the time the user took to answer each question.
+After the question is created, we want to create and start the stopwatch
+to understand how long the user took to answer each question. After the game is
+finished, we then want to end the stopwatch and print out a response that
+tells the user how long they took to complete the game. 
+
+
+Keeping that in mind, for every single problem the user is prompted
+with, we want them to prompt them for the answer, take the text they
+stored, put it inside a variable, check to see if
+their answer is actually a number, and then compare their answer
+to the actual result of the problem.
+
+GuideLine
+
+1. Prompted a question
+What is 5/2?:
+
+2. Allow the user to answer
+What is 5/2?: 2.5
+
+3. Store it inside of a container
+answer = 2.5
+
+4. Check to see if their answer is a double(decimal number or a whole number)
+    If their answer was successfully converted into a double:
+        Compare their answer to the result of the problem
+    Otherwise: Give them a warning, prompt them with another question
+
+Then, to compare their answer, we want to compute the result ahead of time,
+only to not be displayed to the user. We can create a result variable,
+but we want the result to be in the form of a double since division under the
+integers will get us an integer back. This will allow to clear up the ambiguity,
+but we also want to round the number to a certain number of decimal places.
+
+For example, but let's involve division to clear up the confusion
+
+This will divide 5 by 2, and store its result in a variable
+result = (double)5 / 2;
+
+Then, we want to round it, for the purposes of the game, up to
+2 decimal places. We can do so using the result variable, and the
+Math.Round() function.
+
+Math.Round(result, 2)
+
+Then we can take that result and do the exact same thing with our answer.
+
+Math.Round(answer, 2)
+
+Then the idea is that we want to compare those answers with one another. If the answer is deemed correct,
+then we want to signify that they got it right. For every question they get right, we then want to create a variable
+that will allow for us to keep track of the number of correct answers they obtained. After the game is over, we want to
+display the number of questions the user got right out of 5.
+
+Afterwards, based on the number of questions they got right, a message will
+be printed out based upon how they did, basically like a reflection of their
+performance.
+
+
+
+
+
+
+
+
